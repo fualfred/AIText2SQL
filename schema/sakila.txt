@@ -1,0 +1,163 @@
+【DB_ID】 sakila
+【Schema】
+# Table: actor
+[
+(actor_id:SMALLINT, Primary Key, Examples: [58, 92, 182]),
+(first_name:VARCHAR, Examples: [PENELOPE, NICK, ED]),
+(last_name:VARCHAR, Examples: [AKROYD, ALLEN, ASTAIRE]),
+(last_update:TIMESTAMP, Examples: [2006-02-15 04:34:33])
+]
+# Table: city
+[
+(city_id:SMALLINT, Primary Key, Examples: [251, 59, 63]),
+(city:VARCHAR, Examples: [A Coruña (La Coruña), Abha, Abu Dhabi]),
+(country_id:SMALLINT, Examples: [1, 2, 3]),
+(last_update:TIMESTAMP, Examples: [2006-02-15 04:45:25])
+]
+# Table: rental
+[
+(rental_id:INTEGER, Primary Key, Examples: [1, 2, 3]),
+(rental_date:DATETIME, Examples: [2005-05-24 22:53:30]),
+(inventory_id:MEDIUMINT, Examples: [1, 2, 3]),
+(customer_id:SMALLINT, Examples: [1, 2, 3]),
+(return_date:DATETIME, Examples: [2005-05-26 22:04:30]),
+(staff_id:TINYINT, Examples: [1, 2]),
+(last_update:TIMESTAMP, Examples: [2006-02-15 21:30:53])
+]
+# Table: staff
+[
+(staff_id:TINYINT, Primary Key, Examples: [1, 2]),
+(first_name:VARCHAR, Examples: [Mike, Jon]),
+(last_name:VARCHAR, Examples: [Hillyer, Stephens]),
+(address_id:SMALLINT, Examples: [3, 4]),
+(picture:BLOB),
+(email:VARCHAR),
+(store_id:TINYINT, Examples: [1, 2]),
+(active:TINYINT, Examples: [1]),
+(username:VARCHAR, Examples: [Mike, Jon]),
+(password:VARCHAR, Examples: [8cb2237d0679ca88db6464eac60da96345513964]),
+(last_update:TIMESTAMP, Examples: [2006-02-15 03:57:16])
+]
+# Table: category
+[
+(category_id:TINYINT, Primary Key, Examples: [1, 2, 3]),
+(name:VARCHAR, Examples: [Action, Animation, Children]),
+(last_update:TIMESTAMP, Examples: [2006-02-15 04:46:27])
+]
+# Table: film_text
+[
+(film_id:SMALLINT, Primary Key, Examples: [1, 2, 3]),
+(title:VARCHAR, Examples: [ACADEMY DINOSAUR, ACE GOLDFINGER, ADAPTATION HOLES]),
+(description:TEXT)
+]
+# Table: language
+[
+(language_id:TINYINT, Primary Key, Examples: [1, 2, 3]),
+(name:CHAR, Examples: [English, Italian, Japanese]),
+(last_update:TIMESTAMP, Examples: [2006-02-15 05:02:19])
+]
+# Table: inventory
+[
+(inventory_id:MEDIUMINT, Primary Key, Examples: [1, 2, 3]),
+(film_id:SMALLINT, Examples: [1, 2, 3]),
+(store_id:TINYINT, Examples: [1, 2]),
+(last_update:TIMESTAMP, Examples: [2006-02-15 05:09:17])
+]
+# Table: address
+[
+(address_id:SMALLINT, Primary Key, Examples: [56, 105, 457]),
+(address:VARCHAR, Examples: [47 MySakila Drive, 28 MySQL Boulevard, 23 Workhaven Lane]),
+(address2:VARCHAR),
+(district:VARCHAR, Examples: [Alberta, QLD, Nagasaki]),
+(city_id:SMALLINT, Examples: [1, 2, 3]),
+(postal_code:VARCHAR, Examples: [35200, 17886, 83579]),
+(phone:VARCHAR, Examples: [14033335568, 6172235589, 28303384290]),
+(location:NULL),
+(last_update:TIMESTAMP, Examples: [2014-09-25 22:30:27])
+]
+# Table: payment
+[
+(payment_id:SMALLINT, Primary Key, Examples: [1, 2, 3]),
+(customer_id:SMALLINT, Examples: [1, 2, 3]),
+(staff_id:TINYINT, Examples: [1, 2]),
+(rental_id:INTEGER, Examples: [1, 2, 3]),
+(amount:DECIMAL, Examples: [2.99, 0.99, 5.99]),
+(payment_date:DATETIME, Examples: [2005-05-25 11:30:37]),
+(last_update:TIMESTAMP, Examples: [2006-02-15 22:12:30])
+]
+# Table: film_category
+[
+(film_id:SMALLINT, Primary Key, Examples: [19, 21, 29]),
+(category_id:TINYINT, Primary Key, Examples: [1, 2, 3]),
+(last_update:TIMESTAMP, Examples: [2006-02-15 05:07:09])
+]
+# Table: film
+[
+(film_id:SMALLINT, Primary Key, Examples: [1, 2, 3]),
+(title:VARCHAR, Examples: [ACADEMY DINOSAUR, ACE GOLDFINGER, ADAPTATION HOLES]),
+(description:TEXT),
+(release_year:YEAR, Examples: [2006]),
+(language_id:TINYINT, Examples: [1]),
+(original_language_id:TINYINT),
+(rental_duration:TINYINT, Examples: [6, 3, 7]),
+(rental_rate:DECIMAL, Examples: [0.99, 4.99, 2.99]),
+(length:SMALLINT, Examples: [86, 48, 50]),
+(replacement_cost:DECIMAL, Examples: [20.99, 12.99, 18.99]),
+(rating:ENUM, Examples: [PG, G, NC-17]),
+(special_features:SET, Examples: [{'Behind the Scenes', 'Deleted Scenes'}]),
+(last_update:TIMESTAMP, Examples: [2006-02-15 05:03:42])
+]
+# Table: store
+[
+(store_id:TINYINT, Primary Key, Examples: [1, 2]),
+(manager_staff_id:TINYINT, Examples: [1, 2]),
+(address_id:SMALLINT, Examples: [1, 2]),
+(last_update:TIMESTAMP, Examples: [2006-02-15 04:57:12])
+]
+# Table: film_actor
+[
+(actor_id:SMALLINT, Primary Key, Examples: [1, 2, 3]),
+(film_id:SMALLINT, Primary Key, Examples: [1, 2, 3]),
+(last_update:TIMESTAMP, Examples: [2006-02-15 05:05:03])
+]
+# Table: customer
+[
+(customer_id:SMALLINT, Primary Key, Examples: [1, 2, 3]),
+(store_id:TINYINT, Examples: [1, 2]),
+(first_name:VARCHAR, Examples: [MARY, PATRICIA, LINDA]),
+(last_name:VARCHAR, Examples: [ABNEY, ADAM, ADAMS]),
+(email:VARCHAR),
+(address_id:SMALLINT, Examples: [5, 6, 7]),
+(active:TINYINT, Examples: [1, 0]),
+(create_date:DATETIME, Examples: [2006-02-14 22:04:36]),
+(last_update:TIMESTAMP, Examples: [2006-02-15 04:57:20])
+]
+# Table: country
+[
+(country_id:SMALLINT, Primary Key, Examples: [1, 2, 3]),
+(country:VARCHAR, Examples: [Afghanistan, Algeria, American Samoa]),
+(last_update:TIMESTAMP, Examples: [2006-02-15 04:44:00])
+]
+【Foreign keys】
+city.country_id=country.country_id
+rental.customer_id=customer.customer_id
+rental.inventory_id=inventory.inventory_id
+rental.staff_id=staff.staff_id
+staff.address_id=address.address_id
+staff.store_id=store.store_id
+inventory.film_id=film.film_id
+inventory.store_id=store.store_id
+address.city_id=city.city_id
+payment.customer_id=customer.customer_id
+payment.rental_id=rental.rental_id
+payment.staff_id=staff.staff_id
+film_category.category_id=category.category_id
+film_category.film_id=film.film_id
+film.language_id=language.language_id
+film.original_language_id=language.language_id
+store.address_id=address.address_id
+store.manager_staff_id=staff.staff_id
+film_actor.actor_id=actor.actor_id
+film_actor.film_id=film.film_id
+customer.address_id=address.address_id
+customer.store_id=store.store_id
