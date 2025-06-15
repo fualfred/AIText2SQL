@@ -13,7 +13,7 @@ import os
 from config.settings import settings
 from common.session_pool import session_handle
 from common.db_engine import get_db_engine, get_session
-from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
+from langchain_core.prompts import ChatPromptTemplate, PromptTemplate, SystemMessagePromptTemplate
 from common.schema_engine import SchemaEngine
 from common.utils import format_schema_str
 from langchain.output_parsers import PydanticOutputParser
@@ -115,13 +115,18 @@ system_prompt = """
     
     ### 工具 ###
     run_query_sql： 传入数据库名和生成的sql语句执行，并返回执行结果
+    
+    ### 输出格式要求 ###
+    {format_instructions}
 """
 
+parser = PydanticOutputParser(pydantic_object=SqlResult)
 
-# parser = PydanticOutputParser(pydantic_object=SqlResult)
 
 # system_prompt_template = PromptTemplate(template=system_prompt,
-# partial_variables={"format_instructions": parser.get_format_instructions()})
+#                                         partial_variables={"format_instructions": parser.get_format_instructions()})
+
+
 # system_prompt_str = system_prompt_template.format()
 # print(system_prompt_str)
 
@@ -152,7 +157,12 @@ user_prompt = """
 
 
 def invoke(agent, dialect, db_name: str, msg: str):
-    prompt = ChatPromptTemplate.from_messages([("system", system_prompt), ("user", user_prompt)]).invoke(
+    # prompt = ChatPromptTemplate.from_messages([("system", system_prompt), ("user", user_prompt)]).invoke(
+    #     {"dialect": dialect, "schema": load_schema(db_name), "question": msg})
+    prompt = ChatPromptTemplate.from_messages([SystemMessagePromptTemplate.from_template(system_prompt,
+                                                                                         partial_variables={
+                                                                                             "format_instructions": parser.get_format_instructions()}),
+                                               ("user", user_prompt)]).invoke(
         {"dialect": dialect, "schema": load_schema(db_name), "question": msg})
 
     return agent.invoke(prompt)

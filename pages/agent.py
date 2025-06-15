@@ -4,7 +4,7 @@ import pandas as pd
 import streamlit as st
 import time
 import streamlit_antd_components as sac
-from agent.ai_agent import get_agent, invoke, user_prompt
+from agent.ai_agent import get_agent, invoke
 from config.settings import settings
 from common.logger import logger
 
@@ -43,6 +43,16 @@ agent = get_agent()
 sac.divider(label='Text2SQL助手', icon='robot', align='center', color='gray')
 
 
+def st_write_output(data):
+    if isinstance(data, dict):
+        if 'exec_str' in data:
+            st.write(f"执行SQL语句：\n{data.get('exec_str')}\n ,执行的结果：\n", unsafe_allow_html=True)
+        if 'answer' in data:
+            st.write(pd.DataFrame(data.get('answer')))
+    else:
+        st.markdown(data)
+
+
 def dataframe_stream_generator(df, chunk_size=5):
     """
     流式生成DataFrame分块
@@ -74,7 +84,10 @@ if "messages" not in st.session_state:
     # Display chat messages from history on app rerun
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+        if message["role"] == "assistant":
+            st_write_output(message["content"])
+        else:
+            st.markdown(message["content"])
 
     # React to user input
 
@@ -86,11 +99,20 @@ if prompt := st.chat_input("What is up?"):
     with st.spinner("...正在查询中，请稍等...", show_time=True):
         response = invoke(agent, dialect, database, prompt.strip())
         logger.info(f"返回的结果{response['output']}")
+        output = response['output']
+
+        # response_str_SQL = f"执行SQL语句：\n{output.get('exec_str')}\n ,执行的结果：\n"
+        # response_str_answer = pd.DataFrame(output['answer']).to_string()
+
+        # response_str = response_str_SQL + response_str_answer
+
         # response_str = st.write_stream()
         # res_data = f"查询的结果如下:\n{pd.DataFrame(response['output'])}"
         # Display assistant response in chat message container
         # response_str = "查询的结果如下:\n" + pd.DataFrame(list(response['output']))
         with st.chat_message("assistant"):
-            st.markdown(response['output'])
+            st_write_output(output)
+            # st.markdown(response_str, unsafe_allow_html=True)
+        # st.write(response_str, unsafe_allow_html=True)
     # Add assistant response to chat history
-    st.session_state.messages.append({"role": "assistant", "content": response['output']})
+    st.session_state.messages.append({"role": "assistant", "content": output})
