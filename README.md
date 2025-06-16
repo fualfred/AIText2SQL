@@ -17,3 +17,9 @@
 5.效果如图
 
 <img width="1231" alt="image" src="https://github.com/user-attachments/assets/5d1bc06d-d1ff-4a69-a7f1-f9aca1a8c520" />
+
+
+后续计划
+1.加上历史SQL RAG
+2.专业名称映射
+3.数据库说明 来支持自动选择对应的库 
